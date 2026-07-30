@@ -19,16 +19,42 @@ import reviewRouter from "./routes/reviewRoute.js";
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-// --- Middleware ---
-const allowedOrigins = [
+// --- Dynamic CORS Middleware ---
+const configuredOrigins = [
   process.env.CUSTOMER_FRONTEND_URL,
   process.env.PRO_FRONTEND_URL,
   process.env.ADMIN_FRONTEND_URL,
+  ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : []),
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:5175",
 ].filter(Boolean);
+
+const checkOrigin = (origin, callback) => {
+  // Allow requests with no origin (like mobile apps, curl, server-to-server)
+  if (!origin) return callback(null, true);
+
+  // Check exact configured origins
+  if (configuredOrigins.includes(origin)) {
+    return callback(null, true);
+  }
+
+  // Allow any Vercel domain, Render domain, or localhost
+  if (
+    origin.endsWith(".vercel.app") ||
+    origin.endsWith(".onrender.com") ||
+    origin.includes("localhost") ||
+    origin.includes("127.0.0.1")
+  ) {
+    return callback(null, true);
+  }
+
+  return callback(new Error(`CORS error: Origin ${origin} not allowed.`));
+};
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: checkOrigin,
     credentials: true,
   })
 );
@@ -53,7 +79,7 @@ app.get("/", (_req, res) => {
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: checkOrigin,
     credentials: true,
   },
 });
