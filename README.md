@@ -150,6 +150,3 @@ See `backend/.env.example` for the full list, including `MONGODB_URI`, `JWT_SECR
 
 Contributions are welcome. Please open a pull request for any enhancements, bug fixes, or new features.
 
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
