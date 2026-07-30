@@ -64,7 +64,7 @@ export default function Home() {
 
           <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight">
             Expert Home Services, <br />
-            <span className="bg-gradient-to-r from-brand-400 to-indigo-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-sky-400 via-blue-300 to-indigo-200 bg-clip-text text-transparent">
               Delivered Right to Your Door.
             </span>
           </h1>
