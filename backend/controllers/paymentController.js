@@ -5,7 +5,7 @@ import paymentModel from "../models/paymentModel.js";
 
 /**
  * POST /api/payment/create-order
- * authUser-gated: creates a Razorpay order for an accepted booking.
+ * authUser-gated: creates a Razorpay order for a booking with pending payment.
  */
 export const createPaymentOrder = async (req, res) => {
   try {
@@ -28,10 +28,10 @@ export const createPaymentOrder = async (req, res) => {
     }
 
     // Verify booking status
-    if (booking.status !== "accepted") {
+    if (booking.status === "cancelled" || booking.status === "rejected") {
       return res.status(400).json({
         success: false,
-        message: "Payment can only be initiated for bookings with status 'accepted'.",
+        message: "Payment cannot be initiated for cancelled or rejected bookings.",
       });
     }
 

@@ -316,7 +316,7 @@ export default function MyBookingsPage() {
                     </button>
                   )}
 
-                  {isAccepted && isPendingPayment && (
+                  {isPendingPayment && booking.status !== 'cancelled' && booking.status !== 'rejected' && (
                     <button
                       onClick={() => handlePayNow(booking)}
                       className="flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-500/20 px-4 py-1.5 rounded-xl transition-all"
