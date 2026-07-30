@@ -11,7 +11,10 @@ export default function ChatModal({ bookingId, currentUser, role, onClose, onSta
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:8000', {
+    const apiBase = import.meta.env.VITE_API_BASE_URL || 'https://home-service-marketplace.onrender.com/api';
+    const socketUrl = import.meta.env.VITE_SOCKET_URL || apiBase.replace(/\/api\/?$/, '');
+
+    const newSocket = io(socketUrl, {
       withCredentials: true,
     });
     setSocket(newSocket);
